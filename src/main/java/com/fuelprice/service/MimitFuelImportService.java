@@ -129,9 +129,9 @@ public class MimitFuelImportService {
 		Map<String, StationMaster> result = new HashMap<>();
 
 		try (BufferedReader reader = new BufferedReader(
-//            new InputStreamReader(URI.create(properties.getStationsUrl()).toURL().openStream(), StandardCharsets.UTF_8)
+            new InputStreamReader(URI.create(properties.getStationsUrl()).toURL().openStream(), StandardCharsets.UTF_8)
 
-				new InputStreamReader(openStream(properties.getStationsUrl()), StandardCharsets.UTF_8)
+//				new InputStreamReader(openStream(properties.getStationsUrl()), StandardCharsets.UTF_8)
 
 		)) {
 			String header = reader.readLine();
@@ -170,8 +170,9 @@ public class MimitFuelImportService {
 		List<PriceRow> result = new ArrayList<>();
 
 		try (BufferedReader reader = new BufferedReader(
-
-				new InputStreamReader(openStream(properties.getPricesUrl()), StandardCharsets.UTF_8))) {
+				new InputStreamReader(URI.create(properties.getPricesUrl()).toURL().openStream(), StandardCharsets.UTF_8))) {
+//				new InputStreamReader(openStream(properties.getPricesUrl()), StandardCharsets.UTF_8))) {
+					
 			String header = reader.readLine();
 			header = reader.readLine();
 			if (header == null)
@@ -202,16 +203,21 @@ public class MimitFuelImportService {
 	}
 
 	private FuelType mapFuelType(String value) {
-	    if (value == null) return null;
+		if (value == null)
+			return null;
 
-	    String v = value.toLowerCase(Locale.ITALY);
+		String v = value.toLowerCase(Locale.ITALY);
 
-	    if (v.contains("benzina")) return FuelType.BENZINA;
-	    if (v.contains("gasolio") || v.contains("diesel")) return FuelType.DIESEL;
-	    if (v.contains("gpl")) return FuelType.GPL;
-	    if (v.contains("metano")) return FuelType.METANO;
+		if (v.contains("benzina"))
+			return FuelType.BENZINA;
+		if (v.contains("gasolio") || v.contains("diesel"))
+			return FuelType.DIESEL;
+		if (v.contains("gpl"))
+			return FuelType.GPL;
+		if (v.contains("metano"))
+			return FuelType.METANO;
 
-	    return null;
+		return null;
 	}
 
 	private Boolean parseSelfService(String value) {
