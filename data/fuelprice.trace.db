@@ -1,0 +1,5 @@
+2026-05-14 10:54:12.888885+02:00 jdbc[4]: exception
+org.h2.jdbc.JdbcSQLTimeoutException: Timeout trying to lock table {0}; SQL statement:
+insert into fuel_station (address,brand,external_id,fuel_type,latitude,longitude,name,price,price_updated_at,self_service,id) values (?,?,?,?,?,?,?,?,?,?,?) [50200-224]
+2026-05-14 10:54:13.073001+02:00 jdbc[4]: exception
+org.h2.jdbc.JdbcSQLNonTransientException: The object is already closed [90007-224]
