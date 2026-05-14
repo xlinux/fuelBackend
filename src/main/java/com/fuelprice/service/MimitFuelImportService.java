@@ -202,16 +202,16 @@ public class MimitFuelImportService {
 	}
 
 	private FuelType mapFuelType(String value) {
-		if (value == null)
-			return null;
-		String v = value.toLowerCase(Locale.ITALY);
+	    if (value == null) return null;
 
-		if (v.contains("benzina"))
-			return FuelType.BENZINA;
-		if (v.contains("gasolio") || v.contains("diesel"))
-			return FuelType.DIESEL;
+	    String v = value.toLowerCase(Locale.ITALY);
 
-		return null;
+	    if (v.contains("benzina")) return FuelType.BENZINA;
+	    if (v.contains("gasolio") || v.contains("diesel")) return FuelType.DIESEL;
+	    if (v.contains("gpl")) return FuelType.GPL;
+	    if (v.contains("metano")) return FuelType.METANO;
+
+	    return null;
 	}
 
 	private Boolean parseSelfService(String value) {
