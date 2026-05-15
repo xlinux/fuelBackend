@@ -1,7 +1,9 @@
 package com.fuelprice.service;
 
 import java.util.Comparator;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.stereotype.Service;
 
@@ -57,5 +59,60 @@ public class FuelStationService {
 				}).filter(s -> s.distanceMeters() <= radiusMeters)
 				.min(Comparator.comparing(BestStationResponse::estimatedTotalCost))
 				.orElseThrow(() -> new RuntimeException("Nessun distributore trovato"));
+	}
+
+	public List<BestStationResponse> findBestStations(
+	        double lat,
+	        double lng,
+	        FuelType fuelType,
+	        double liters,
+	        double carKmPerLiter,
+	        double radiusMeters,
+	        int limit
+	) {
+	    Set<String> seenStations = new HashSet<>();
+
+	    return repository.findByFuelType(fuelType)
+	            .stream()
+	            .filter(s -> s.getLatitude() != null)
+	            .filter(s -> s.getLongitude() != null)
+	            .filter(s -> s.getPrice() != null)
+	            .map(station -> {
+	                double distanceMeters = DistanceUtils.distanceMeters(
+	                        lat,
+	                        lng,
+	                        station.getLatitude(),
+	                        station.getLongitude()
+	                );
+
+	                double distanceKm = distanceMeters / 1000.0;
+	                double travelCost = ((distanceKm * 2) / carKmPerLiter) * station.getPrice();
+	                double fuelCost = liters * station.getPrice();
+	                double estimatedTotalCost = fuelCost + travelCost;
+
+	                return new BestStationResponse(
+	                        station.getId(),
+	                        station.getExternalId(),
+	                        station.getName(),
+	                        station.getBrand(),
+	                        station.getAddress(),
+	                        station.getLatitude(),
+	                        station.getLongitude(),
+	                        distanceMeters,
+	                        station.getFuelType(),
+	                        station.getPrice(),
+	                        station.getSelfService(),
+	                        station.getPriceUpdatedAt(),
+	                        liters,
+	                        fuelCost,
+	                        travelCost,
+	                        estimatedTotalCost
+	                );
+	            })
+	            .filter(s -> s.distanceMeters() <= radiusMeters)
+	            .sorted(Comparator.comparing(BestStationResponse::estimatedTotalCost))
+	            .filter(s -> seenStations.add(s.externalId()))
+	            .limit(limit)
+	            .toList();
 	}
 }
