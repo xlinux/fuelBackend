@@ -42,6 +42,7 @@ public class MimitFuelImportService {
 	@Scheduled(cron = "0 30 9 * * *")
 	@Transactional
 	public void scheduledImport() {
+		System.out.println("Reload benzinai");
 		importFromMimit();
 	}
 
