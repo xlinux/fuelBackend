@@ -30,9 +30,10 @@ public class FuelStationController {
 	public List<NearbyStationResponse> nearby(@RequestParam double lat, @RequestParam double lng,
 			@RequestParam FuelType fuelType,
 			@RequestParam(defaultValue = "3000") @Min(100) @Max(20000) double radiusMeters,
-			@RequestParam(defaultValue = "20") @Min(1) @Max(100) int limit) {
+			@RequestParam(defaultValue = "20") @Min(1) @Max(100) int limit,
+			@RequestParam(defaultValue = "14") int maxPriceAgeDays) {
 		System.out.println("nearby");
-		return fuelStationService.findNearby(lat, lng, fuelType, radiusMeters, limit);
+		return fuelStationService.findNearby(lat, lng, fuelType, radiusMeters, limit, maxPriceAgeDays);
 	}
 
 	@GetMapping("/best")
@@ -49,8 +50,9 @@ public class FuelStationController {
 	public List<BestStationResponse> bestOptions(@RequestParam double lat, @RequestParam double lng,
 			@RequestParam FuelType fuelType, @RequestParam(defaultValue = "30") double liters,
 			@RequestParam(defaultValue = "15") double carKmPerLiter,
-			@RequestParam(defaultValue = "10000") double radiusMeters, @RequestParam(defaultValue = "2") int limit) {
+			@RequestParam(defaultValue = "10000") double radiusMeters, @RequestParam(defaultValue = "2") int limit,
+			@RequestParam(defaultValue = "7") int maxPriceAgeDays) {
 		System.out.println("best-options");
-		return fuelStationService.findBestStations(lat, lng, fuelType, liters, carKmPerLiter, radiusMeters, limit);
+		return fuelStationService.findBestStations(lat, lng, fuelType, liters, carKmPerLiter, radiusMeters, limit, maxPriceAgeDays);
 	}
 }
