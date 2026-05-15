@@ -18,8 +18,12 @@ public class RestCallLoggingAspect {
 
 	private static final Logger log = LogManager.getLogger(RestCallLoggingAspect.class);
 
-	@Around("within(@org.springframework.web.bind.annotation.RestController *)")
-	public Object logRestCall(ProceedingJoinPoint joinPoint) throws Throwable {
+	@Around("""
+		    within(@org.springframework.web.bind.annotation.RestController *)
+		    && !execution(* com.fuelprice.controller.*Import*.*(..))
+		    && !execution(* com.fuelprice.controller.MimitImportController.*(..))
+		""")
+		public Object logRestCall(ProceedingJoinPoint joinPoint) throws Throwable {
 
 		long start = System.currentTimeMillis();
 
