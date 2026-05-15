@@ -31,7 +31,6 @@ public class FuelStationController {
 			@RequestParam FuelType fuelType,
 			@RequestParam(defaultValue = "3000") @Min(100) @Max(20000) double radiusMeters,
 			@RequestParam(defaultValue = "20") @Min(1) @Max(100) int limit) {
-		System.out.println("nearby");
 		return fuelStationService.findNearby(lat, lng, fuelType, radiusMeters, limit);
 	}
 
@@ -41,7 +40,6 @@ public class FuelStationController {
 			@RequestParam(defaultValue = "15") @Min(3) @Max(40) double carKmPerLiter,
 			@RequestParam(defaultValue = "10000") @Min(100) @Max(50000) double radiusMeters,
 			@RequestParam(defaultValue = "true") boolean roundTrip) {
-		System.out.println("best");
 		return fuelStationService.findBestStation(lat, lng, fuelType, liters, carKmPerLiter, radiusMeters, roundTrip);
 	}
 
@@ -50,7 +48,6 @@ public class FuelStationController {
 			@RequestParam FuelType fuelType, @RequestParam(defaultValue = "30") double liters,
 			@RequestParam(defaultValue = "15") double carKmPerLiter,
 			@RequestParam(defaultValue = "10000") double radiusMeters, @RequestParam(defaultValue = "2") int limit) {
-		System.out.println("best-options");
 		return fuelStationService.findBestStations(lat, lng, fuelType, liters, carKmPerLiter, radiusMeters, limit);
 	}
 }
